@@ -1,0 +1,7 @@
+<div class="admin-message-container">
+    <div class="message-button-container">
+        {% for button in buttons %}
+            <a href="#" onclick="SendMessage(1)" class="button admin-message-button" id="id_admin_send_message">{{button.label}}</a>
+        {% endfor %}
+    </div>
+</div>

@@ -1,18 +1,28 @@
 from django.contrib import admin
-from .adminbuttons import *
-
+from .adminbuttons import AdminFieldButtonsSet
+from .adminbuttons import AdminFieldButton as AdmBtn
+from .tools import admin_model_with_buttons_decorator
+from django.urls import reverse_lazy, reverse
 from .models import *
 
+
+@admin_model_with_buttons_decorator
 @admin.register(TestClass)
 class BotUserAdmin(admin.ModelAdmin):
 
-    buttons_function = AdminFieldButton([['button_5', 'data1'], ['button_2'], ['button_3', 123]], 'Обычные кнопки')
-    text_button = TextAdminFieldButton([['button_5', 'data1'], ['button_2'], ['button_3', 123]], 'Кнопки с текстом')
-    readonly_fields = ('buttons_function', 'text_button')
+    DefaultButtonsField = AdminFieldButtonsSet(buttons=[ [AdmBtn('Button 1_1'), AdmBtn('Button 1_2')],
+                                                         [AdmBtn('Button 2_1'), AdmBtn('Button 2_2')],
+                                                         [AdmBtn('Button 3_1'), AdmBtn('Button 3_2'), AdmBtn('Button 3_3')]],
+                                        description = 'Обычные кнопки',
+                                        url=reverse_lazy('adminbuttons:catch_button'))
 
 
-    class Media:
-        js = ('admin_custom/myjs.js',)  # in static
-        css = {'all': ('admin_custom/mycss.css',)}
+    TextAdminButtons = AdminFieldTextButtonsSet(buttons=[[AdmBtn('Button 1_1'), AdmBtn('Button 1_2')],
+                                                         [AdmBtn('Button 2_1'), AdmBtn('Button 2_2')],
+                                                         [AdmBtn('Button 3_1'), AdmBtn('Button 3_2'), AdmBtn('Button 3_3')]],
+                                        description = 'Кнопки с текстом',
+                                        url=reverse_lazy('adminbuttons:catch_button'))
+
+    readonly_fields = []
 
 

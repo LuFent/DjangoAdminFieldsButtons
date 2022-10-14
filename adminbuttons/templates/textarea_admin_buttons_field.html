@@ -1,8 +1,17 @@
-<div class="admin-message-container">
-    <textarea type="text" id="MessageText" value=""></textarea>
-    <div class="message-button-container">
-        {% for button in buttons %}
-            <a href="#" onclick="SendMessage(1)" class="button admin-message-button" id="id_admin_send_message">{{button.label}}</a>
-        {% endfor %}
-    </div>
+<div class="textarea-admin-field-buttons-container">
+     <textarea type="text" id="MessageText" value=""></textarea>
+        <div class="admin-field-buttons-container">
+            {% for button_row in buttons_set %}
+                <div class="admin-field-buttons-row">
+                    {% for button in button_row %}
+                    <a href="#"
+                       onclick="CatchAdminTextButtonClick('{{ button.url }}', '{{ button.callback_data}}')"
+                       class="button admin-message-button"
+                       id="id_admin_send_message"
+                       style="background: {{button.color}}">
+                        {{button.label}}</a>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
 </div>

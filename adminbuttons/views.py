@@ -1,5 +1,10 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+import json
+from django.apps import apps
 
-# Create your views here.
 def catch_button(request):
-    print(request.json)
+    request_data = json.loads(request.read())
+    apps.get_model(app_label='adminbuttons', model_name='testclass')
+    print(request_data)
+    return HttpResponse('OK')

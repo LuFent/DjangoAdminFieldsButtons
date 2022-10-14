@@ -16,47 +16,44 @@ function getCookie(name) {
 }
 
 
-function SendMessage(toWhom) {
-
-	var messageText = document.getElementById("MessageText").value;
-	//var eventName = document.getElementById("id_name").value;
-
+function CatchAdminButtonClick(apiUrl, buttonData) {
     const csrftoken = getCookie('csrftoken');
+    //<body class=" app-adminbuttons model-testclass change-form"
     var xhr = new XMLHttpRequest();
-    var url = "/send_message";
-    xhr.open("POST", url, true);
+    xhr.open("POST", apiUrl, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("X-CSRFToken", csrftoken);
-    xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-        var json = JSON.parse(xhr.responseText);
-        console.log(json.email + ", " + json.password);
+    var currentUrl = new URL(window.location.href);
+    var currentPathName = currentUrl.pathname;
+    var currentPathName = currentPathName.split('/').filter(part => part.length > 0)
+    var appName = currentPathName[currentPathName.findIndex(part => part == 'admin') + 1]
+    var modelName = currentPathName[currentPathName.findIndex(part => part == 'admin') + 2]
+    if (currentPathName.at(-1) == 'change') {
+        var data = JSON.stringify({"button_data": buttonData, "app_name": appName, "modelName": modelName});
+        xhr.send(data);
     }
-    };
-    //var data = JSON.stringify({"message_text": messageText, "event_name": eventName, "to_whom": toWhom});
-    var data = JSON.stringify({"message_text": messageText, "to_whom": toWhom});
-    xhr.send(data);
+    console.log(currentPathName);
     }
 
 
-function CatchAdminButtonClick(apiLink, buttonData) {
-
-	var messageText = document.getElementById("MessageText").value;
-	//var eventName = document.getElementById("id_name").value;
-
+function CatchAdminTextButtonClick(apiUrl, buttonData) {
     const csrftoken = getCookie('csrftoken');
+
     var xhr = new XMLHttpRequest();
-    var url = "/send_message";
-    xhr.open("POST", url, true);
+    var textAreaData = document.getElementById("MessageText").value;
+    console.log(textAreaData);
+    xhr.open("POST", apiUrl, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("X-CSRFToken", csrftoken);
-    xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-        var json = JSON.parse(xhr.responseText);
-        console.log(json.email + ", " + json.password);
+    var currentUrl = new URL(window.location.href);
+    var currentPathName = currentUrl.pathname;
+    var currentPathName = currentPathName.split('/').filter(part => part.length > 0)
+    var appName = currentPathName[currentPathName.findIndex(part => part == 'admin') + 1]
+    var modelName = currentPathName[currentPathName.findIndex(part => part == 'admin') + 2]
+    if (currentPathName.at(-1) == 'change') {
+        var data = JSON.stringify({"button_data": buttonData, "app_name": appName, "modelName": modelName, "text": textAreaData});
+        xhr.send(data);
     }
-    };
-    //var data = JSON.stringify({"message_text": messageText, "event_name": eventName, "to_whom": toWhom});
-    var data = JSON.stringify({"message_text": messageText, "to_whom": toWhom});
-    xhr.send(data);
+
     }
+
